@@ -39,6 +39,52 @@ public class ClassCreatorProxy {
 
     /**
      * 创建Java代码
+     *
+     * @return
+     */
+    public String generateJavaCode() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("package ").append(mPackageName).append(";\n\n");
+        builder.append("import com.example.gavin.apt_library.*;\n");
+        builder.append('\n');
+        builder.append("public class ").append(mBindingClassName);
+        builder.append(" {\n");
+
+        generateMethods(builder);
+        builder.append('\n');
+        builder.append("}\n");
+        return builder.toString();
+    }
+
+    /**
+     * 加入Method
+     *
+     * @param builder
+     */
+    private void generateMethods(StringBuilder builder) {
+        builder.append("public void bind(" + mTypeElement.getQualifiedName() + " host ) {\n");
+        for (int id : mVariableElementMap.keySet()) {
+            VariableElement element = mVariableElementMap.get(id);
+            String name = element.getSimpleName().toString();
+            String type = element.asType().toString();
+            builder.append("host." + name).append(" = ");
+            builder.append("(" + type + ")(((android.app.Activity)host).findViewById( " + id + "));\n");
+        }
+        builder.append("  }\n");
+    }
+
+    public String getProxyClassFullName() {
+        return mPackageName + "." + mBindingClassName;
+    }
+
+    public TypeElement getTypeElement() {
+        return mTypeElement;
+    }
+
+    //======================
+
+    /**
+     * 创建Java代码
      * javapoet
      *
      * @return
