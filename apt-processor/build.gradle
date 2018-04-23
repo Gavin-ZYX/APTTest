@@ -1,0 +1,11 @@
+apply plugin: 'java-library'
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.google.auto.service:auto-service:1.0-rc2'
+    implementation 'com.squareup:javapoet:1.10.0'
+    implementation project(':apt-annotation')
+}
+
+sourceCompatibility = "1.7"
+targetCompatibility = "1.7"

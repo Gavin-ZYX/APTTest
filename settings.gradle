@@ -1,0 +1,1 @@
+include ':app', ':apt-annotation', ':apt-processor', ':apt-library'
